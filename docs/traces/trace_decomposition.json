@@ -1,0 +1,38 @@
+{
+  "run_id": "en-4d2314",
+  "question": "Why did the bill go up 15%?",
+  "steps": [
+    {
+      "agent": "analyst",
+      "tool": "build_baseline",
+      "output": {
+        "r2": 0.9151
+      }
+    },
+    {
+      "agent": "analyst",
+      "tool": "decompose_change",
+      "output": {
+        "tariff": 8.2,
+        "mix": 3.4,
+        "volume": 1.2,
+        "weather": 0.9,
+        "waste": 1.7
+      }
+    },
+    {
+      "agent": "analyst",
+      "tool": "find_idle_load",
+      "output": {
+        "compressors_night_share": 0.35
+      }
+    },
+    {
+      "agent": "writer",
+      "tool": "write_finance_brief",
+      "check": "all numbers match tool outputs"
+    }
+  ],
+  "llm_calls": 1,
+  "tokens": 228
+}

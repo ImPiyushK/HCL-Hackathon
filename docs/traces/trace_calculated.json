@@ -1,0 +1,20 @@
+{
+  "run_id": "en-55568d",
+  "question": "Which assets use the most energy?",
+  "steps": [
+    {
+      "agent": "analyst",
+      "tool": "get_top_assets",
+      "output": {
+        "top_user": "furnace"
+      }
+    },
+    {
+      "agent": "writer",
+      "tool": "write_finance_brief",
+      "check": "all numbers match tool outputs"
+    }
+  ],
+  "llm_calls": 1,
+  "tokens": 144
+}

@@ -1,0 +1,20 @@
+{
+  "run_id": "en-87ce23",
+  "question": "What should we do first?",
+  "steps": [
+    {
+      "agent": "analyst",
+      "tool": "rank_actions",
+      "output": {
+        "actions_count": 4
+      }
+    },
+    {
+      "agent": "writer",
+      "tool": "write_finance_brief",
+      "check": "all numbers match tool outputs"
+    }
+  ],
+  "llm_calls": 1,
+  "tokens": 176
+}
