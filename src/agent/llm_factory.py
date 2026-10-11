@@ -10,6 +10,8 @@ from src.config import (
     LLM_PROVIDER, LLM_MODEL, MOCK_LLM,
     GEMINI_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY, OLLAMA_BASE_URL
 )
+import os
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 
 class MockLLM:
     """Deterministic, high-speed, grounded Mock LLM for offline testing."""
@@ -113,6 +115,23 @@ class LLMClient:
                 text = response.choices[0].message.content
                 tokens = response.usage.total_tokens
                 return {"text": text, "tokens": tokens, "provider_used": "openai"}
+
+            elif self.provider == "groq" and GROQ_API_KEY:
+                import openai
+                client = openai.OpenAI(
+                    api_key=GROQ_API_KEY,
+                    base_url="https://api.groq.com/openai/v1"
+                )
+                response = client.chat.completions.create(
+                    model=self.model or "qwen/qwen3.8-27b",
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_content}
+                    ]
+                )
+                text = response.choices[0].message.content
+                tokens = response.usage.total_tokens
+                return {"text": text, "tokens": tokens, "provider_used": "groq"}
 
             elif self.provider == "anthropic" and ANTHROPIC_API_KEY:
                 import anthropic
