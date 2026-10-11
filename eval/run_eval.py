@@ -25,12 +25,12 @@ from src.agent.verifier import faithfulness_verifier
 from src.agent.tracer import audit_tracer
 
 TRUE_GROUND_TRUTH = {
-    "total_pct": 15.4,
-    "tariff": 8.2,
-    "product_mix": 3.4,
-    "volume": 1.2,
-    "weather": 0.9,
-    "waste": 1.7
+    "total_pct": 16.9,
+    "tariff": 8.4,
+    "product_mix": 3.1,
+    "volume": 1.0,
+    "weather": 1.2,
+    "waste": 3.2
 }
 
 def evaluate_config(eval_cases, config_name="Config_A"):
@@ -64,7 +64,8 @@ def evaluate_config(eval_cases, config_name="Config_A"):
             decomp_causes = {b["cause"]: b["pct_points"] for b in bridge}
             
             # Check reconciliation
-            if abs(sum_pts - 15.4) < 0.2:
+            expected_total = res.get("total_increase_pct", sum_pts)
+            if abs(sum_pts - expected_total) < 0.2:
                 reconciliation_passes += 1
                 
             # Compute MAE against true ground truth

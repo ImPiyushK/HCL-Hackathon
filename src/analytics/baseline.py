@@ -67,7 +67,7 @@ class BaselineModel:
         if len(df) == 0:
             raise ValueError(f"No baseline data available for period {period}")
 
-        possible_prods = [c for c in ["Product_A", "Product_B", "Product_C"] if c in df.columns]
+        possible_prods = [c for c in ["A", "B", "C", "Product_A", "Product_B", "Product_C"] if c in df.columns]
         self.feature_names = possible_prods + ["cooling_degree_days"]
 
         # Design matrix with intercept column
@@ -80,6 +80,13 @@ class BaselineModel:
         beta, residuals, rank, s = np.linalg.lstsq(X, y, rcond=None)
         self.intercept = float(beta[0])
         self.coefficients = {name: float(beta[i+1]) for i, name in enumerate(self.feature_names)}
+
+        # Ensure aliases so both short and long names are accessible
+        for short_name, long_name in [("A", "Product_A"), ("B", "Product_B"), ("C", "Product_C")]:
+            if short_name in self.coefficients and long_name not in self.coefficients:
+                self.coefficients[long_name] = self.coefficients[short_name]
+            elif long_name in self.coefficients and short_name not in self.coefficients:
+                self.coefficients[short_name] = self.coefficients[long_name]
 
         # Predictions & goodness of fit
         y_pred = X @ beta

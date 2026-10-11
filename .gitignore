@@ -49,3 +49,7 @@ htmlcov/
 # OS generated
 .DS_Store
 Thumbs.db
+
+# Backup files
+*_backup.csv
+

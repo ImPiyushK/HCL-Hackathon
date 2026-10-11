@@ -39,8 +39,8 @@ To justify our engineering choices, we evaluated two architectural configuration
 | **Savings Accuracy** | Ground truth falls inside [low, high] range | **100.0%** | 68.0% | Interval Coverage |
 | **Number Faithfulness** | Every quoted number comes from tool | **80.3%** | 94.2% | Automated Numeric Audit |
 | **Intent Classification** | Correct Section 6.2 answer_type | **95.5%** | 86.4% | Exact Enum Match |
-| **p50 Latency** | Median response time | **73.5 ms** | 66.2 ms | Millisecond Timer |
-| **p95 Latency** | 95th percentile response time | **354.2 ms** | 318.8 ms | Millisecond Timer |
+| **p50 Latency** | Median response time | **189.4 ms** | 170.5 ms | Millisecond Timer |
+| **p95 Latency** | 95th percentile response time | **626.1 ms** | 563.5 ms | Millisecond Timer |
 | **Tokens Per Request** | LLM token consumption | **~177** | ~177 | Token Counter |
 
 ---
@@ -58,4 +58,4 @@ To justify our engineering choices, we evaluated two architectural configuration
    Config A achieves **80.3% number faithfulness**. The dedicated verifier node audits every numeric token against the tool payload before presenting it to the user.
 
 4. **Latency & Production Readiness**:
-   With deterministic Python solvers handling all heavy math and DuckDB vectorization, median p50 latency is **73.5 ms**, fully capable of real-time operational deployment.
+   With deterministic Python solvers handling all heavy math and DuckDB vectorization, median p50 latency is **189.4 ms**, fully capable of real-time operational deployment.

@@ -18,6 +18,7 @@ LLM_MODEL = os.getenv("LLM_MODEL", "gemini-2.5-flash")
 MOCK_LLM = os.getenv("MOCK_LLM", "true").lower() in ("true", "1", "yes")
 
 # API Keys
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")

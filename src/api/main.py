@@ -51,7 +51,7 @@ def get_health():
         db_status = f"error: {str(e)}"
         counts = {}
 
-    llm_status = "ready" if (MOCK_LLM or LLM_PROVIDER in ("gemini", "openai", "anthropic", "ollama")) else "unconfigured"
+    llm_status = "ready" if (MOCK_LLM or LLM_PROVIDER in ("groq", "gemini", "openai", "anthropic", "ollama")) else "unconfigured"
 
     return HealthResponse(
         status="healthy",

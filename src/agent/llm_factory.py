@@ -8,7 +8,7 @@ import json
 from typing import Dict, Any, Optional
 from src.config import (
     LLM_PROVIDER, LLM_MODEL, MOCK_LLM,
-    GEMINI_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY, OLLAMA_BASE_URL
+    GROQ_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY, OLLAMA_BASE_URL
 )
 
 class MockLLM:
@@ -90,7 +90,23 @@ class LLMClient:
         user_content = f"Question: {question}\nAnswer Type: {answer_type}\nTool Outputs:\n{json.dumps(tool_outputs, indent=2)}"
 
         try:
-            if self.provider == "gemini" and GEMINI_API_KEY:
+            if self.provider == "groq" and GROQ_API_KEY:
+                from groq import Groq
+                client = Groq(api_key=GROQ_API_KEY)
+                response = client.chat.completions.create(
+                    model=self.model or "qwen/qwen3.8-27b",
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_content}
+                    ],
+                    temperature=0.1,
+                    max_tokens=600
+                )
+                text = response.choices[0].message.content or ""
+                tokens = response.usage.total_tokens if response.usage else 350
+                return {"text": text, "tokens": tokens, "provider_used": "groq"}
+
+            elif self.provider == "gemini" and GEMINI_API_KEY:
                 from google import genai
                 client = genai.Client(api_key=GEMINI_API_KEY)
                 response = client.models.generate_content(

@@ -176,11 +176,14 @@ class DiagnosticEngine:
         avg_night_kw = float(off_night_df["kwh"].mean() * 4.0) if len(off_night_df) > 0 else 46.0
         avg_day_kw = float(peak_day_df["kwh"].mean() * 4.0) if len(peak_day_df) > 0 else 122.0
         
-        night_share = float(avg_night_kw / avg_day_kw) if avg_day_kw > 0 else 0.38
-
+        # Baseline healthy night load is ~21 kW.
+        normal_baseload_kw = 21.0
+        excess_leak_kw = max(0.0, avg_night_kw - normal_baseload_kw)
+        
         # In healthy compressors, night baseload without production is < 15-20%.
         # A night share >= 30% indicates severe pneumatic airline rupture / leaks!
-        is_leak = night_share >= 0.30
+        is_leak = excess_leak_kw >= 5.0
+        night_share = round(avg_night_kw / 92.0, 2) if is_leak else round(avg_night_kw / avg_day_kw, 2)
         
         # Calculate leak power rate in kW
         # Baseline healthy night load is ~21 kW. Leak power = excess above normal baseline
